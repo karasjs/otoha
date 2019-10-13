@@ -1,0 +1,7 @@
+{
+  "name": "selenite",
+  "version": "0.0.1",
+  "dependencies": {
+    "homunculus": "~1.6.0"
+  }
+}
