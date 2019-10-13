@@ -1,0 +1,47 @@
+function quickSort(arr, begin, end, compare) {
+  if(begin >= end) {
+    return;
+  }
+  let i = begin, j = end, p = i, n = arr[p], seq = true;
+  outer:
+  while(i < j) {
+    if(seq) {
+      for(; i < j; j--) {
+        if((compare && compare.call(arr, n, arr[j])) || (!compare && n > arr[j])) {
+          swap(arr, p, j);
+          p = j;
+          seq = !seq;
+          continue outer;
+        }
+      }
+    }
+    else {
+      for(; i < j; i++) {
+        if((compare && compare.call(arr, arr[i], n)) || (!compare && n < arr[i])) {
+          swap(arr, p, i);
+          p = i;
+          seq = !seq;
+          continue outer;
+        }
+      }
+    }
+  }
+  quickSort(arr, begin, p, compare);
+  quickSort(arr, p + 1, end, compare);
+}
+function swap(arr, a, b) {
+  let temp = arr[a];
+  arr[a] = arr[b];
+  arr[b] = temp;
+}
+
+export default function(arr, compare) {
+  if(!Array.isArray(arr)) {
+    throw new Error('quick sort need an array');
+  }
+  if(arr.length < 2) {
+    return arr;
+  }
+  quickSort(arr, 0, arr.length - 1, compare);
+  return arr;
+};
