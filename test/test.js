@@ -229,6 +229,11 @@ describe(':pseudo', function() {
     let res = selenite.parse(s);
     expect(res).to.eql({"a":{"_:":[[["nth-of-type(2n+1)"],{"_v":[],"_p":[0,0,2]}]]}});
   });
+  it('::first-line', function() {
+    let s = 'a::first-line{margin:0}';
+    let res = selenite.parse(s);
+    expect(res).to.eql({"a":{"_:":[[["first-line"],{"_v":[[0,"margin:0"]],"_p":[0,0,2]}]]}});
+  });
 });
 
 describe('attr', function() {

@@ -180,7 +180,6 @@
   }
 
   function record(sel, idx, styles, res, option) {
-    console.log(sel);
     var _p = [0, 0, 0];
 
     for (var i = sel.length - 1; i >= 0; i--) {

@@ -55,7 +55,7 @@ function style(node) {
   return s;
 }
 
-function record(sel, idx, styles, res, option) { console.log(sel);
+function record(sel, idx, styles, res, option) {
   let _p = [0, 0, 0];
   for(let i = sel.length - 1; i >= 0; i--) {
     let temp = {
