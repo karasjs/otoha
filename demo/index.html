@@ -186,30 +186,33 @@
           .replace( /\\(\d+)\\/g, pop ); // backslashes in strings
 
         return out;
-      };
+      }
       console.clear();
-      var nodes = Array.prototype.slice.call(document.getElementsByTagName('code'), 0);
-      nodes.forEach(function(node, i) {
-        var res = selenite.parse(node.textContent || node.innerText || node.firstChild && node.firstChild.nodeValue);
-        res = JSON.stringify(res);
-        console.log(res);
-        res = JSONFormat(res);
-        var ast = selenite.ast();
-        var tokens = selenite.tokens();
-        var pre = node.parentNode;
-        var ncode = document.createElement('code');
-        var npre = document.createElement('pre');
-        ncode.innerHTML = res.replace(/</g, '&lt;');
-        ncode.className = 'brush:js';
-        npre.appendChild(ncode);
-        pre.parentNode.insertBefore(npre, pre.nextSibling);
-        if(ast) {
-          draw(i, ast, npre.nextSibling);
-        }
-        if(tokens) {
-          console.table(tokens, ['t', 'c', 'v', 'id', 'si', 'ignore']);
-        }
-      });
+      var nodes = document.querySelectorAll('code');
+      for(var i = 1; i < nodes.length; i++) {
+        var pre = nodes[i].parentNode;
+        pre.parentNode.removeChild(pre);
+      }
+      var node = document.querySelector('code');
+      var res = selenite.parse(node.textContent || node.innerText || node.firstChild && node.firstChild.nodeValue);
+      res = JSON.stringify(res);
+      console.log(res);
+      res = JSONFormat(res);
+      var ast = selenite.ast();
+      var tokens = selenite.tokens();
+      var pre = node.parentNode;
+      var ncode = document.createElement('code');
+      var npre = document.createElement('pre');
+      ncode.innerHTML = res.replace(/</g, '&lt;');
+      ncode.className = 'brush:js';
+      npre.appendChild(ncode);
+      pre.parentNode.insertBefore(npre, pre.nextSibling);
+      if(ast) {
+        draw(0, ast, npre.nextSibling);
+      }
+      if(tokens) {
+        console.table(tokens, ['t', 'c', 'v', 'id', 'si', 'ignore']);
+      }
       jssc.exec();
     }
     var ta = document.getElementById('ta');
@@ -222,7 +225,7 @@
       });
       document.getElementsByTagName('code')[0].innerHTML = s.replace(/</g, '&lt;');
       init();
-    }
+    };
     function hashChange() {
       var s = location.hash.replace(/^#/, '');
       if(s) {
