@@ -14,53 +14,8 @@ function parse(node, option) {
     if(leaf.name() === Node.STYLESET) {
       styleset(leaf, res, option);
     }
-    else if(leaf.name() === Node.MEDIA) {
-      res.media = res.media || [];
-      let item = {};
-
-      let qlist = leaf.leaf(1);
-      qlist.leaves().forEach(function(leaf) {
-        if(leaf.name() === Node.MEDIAQUERY) {
-          query(leaf, item);
-        }
-      });
-
-      let block = leaf.last();
-      let leaves = block.leaves();
-      if(leaves.length > 2) {
-        let style = {};
-        for(let i = 1, len = leaves.length - 1; i < len; i++) {
-          styleset(leaves[i], style, option);
-        }
-        item.style = style;
-      }
-      if(item.style) {
-        res.media.push(item);
-      }
-    }
   });
   return res;
-}
-
-function query(node, item) {
-  let leaves = node.leaves();
-  let query = [];
-  leaves.forEach(function(leaf) {
-    if(leaf.name() === Node.EXPR) {
-      let expr = [];
-      leaf.leaves().forEach(function(item) {
-        if(item.name() === Node.KEY || item.name() === Node.VALUE) {
-          expr.push(join(item, true));
-        }
-      });
-      //可能只有key或者k/v都有，以String/Array格式区分
-      if(expr.length) {
-        query.push(expr.length > 1 ? expr : expr[0]);
-      }
-    }
-  });
-  item.query = item.query || [];
-  item.query.push(query);
 }
 
 function styleset(node, res, option) {
@@ -100,7 +55,7 @@ function style(node) {
   return s;
 }
 
-function record(sel, idx, styles, res, option) {
+function record(sel, idx, styles, res, option) { console.log(sel);
   let _p = [0, 0, 0];
   for(let i = sel.length - 1; i >= 0; i--) {
     let temp = {
@@ -253,9 +208,7 @@ function record(sel, idx, styles, res, option) {
       res._v.push([idx, style]);
     });
   }
-  if(!option.noPriority) {
-    res._p = _p;
-  }
+  res._p = _p;
 }
 
 function priority(token, s, p) {
