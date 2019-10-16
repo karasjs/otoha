@@ -10,7 +10,7 @@ class Selenite {
   parse(code, option = {}) {
     this.parser = homunculus.getParser('css');
     this.node = this.parser.parse(code);
-    return serialize(this.node, option);
+    return serialize(this.node);
   }
 
   tokens() {

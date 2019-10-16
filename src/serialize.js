@@ -7,23 +7,23 @@ let Node = homunculus.getClass('node', 'css');
 
 let idx;
 
-function parse(node, option) {
+function parse(node) {
   idx = 0;
   let res = {};
   node.leaves().forEach(function(leaf, i) {
     if(leaf.name() === Node.STYLESET) {
-      styleset(leaf, res, option);
+      styleset(leaf, res);
     }
   });
   return res;
 }
 
-function styleset(node, res, option) {
+function styleset(node, res) {
   let sels = selectors(node.first());
   let styles = block(node.last());
   let i = idx++;
   sels.forEach(function(sel) {
-    record(sel, i, styles, res, option);
+    record(sel, i, styles, res);
   });
 }
 function selectors(node) {
@@ -55,7 +55,7 @@ function style(node) {
   return s;
 }
 
-function record(sel, idx, styles, res, option) {
+function record(sel, idx, styles, res) {
   let _p = [0, 0, 0];
   for(let i = sel.length - 1; i >= 0; i--) {
     let temp = {
@@ -199,15 +199,10 @@ function record(sel, idx, styles, res, option) {
     }
     res = save(temp, res);
   }
-  if(option.noValue) {
-    res._v = true;
-  }
-  else {
-    res._v = res._v || [];
-    styles.forEach(function(style) {
-      res._v.push([idx, style]);
-    });
-  }
+  res._v = res._v || [];
+  styles.forEach(function(style) {
+    res._v.push([idx, style.split(':')]);
+  });
   res._p = _p;
 }
 

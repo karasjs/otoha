@@ -127,23 +127,23 @@
   var Node = homunculus.getClass('node', 'css');
   var idx;
 
-  function parse(node, option) {
+  function parse(node) {
     idx = 0;
     var res = {};
     node.leaves().forEach(function (leaf, i) {
       if (leaf.name() === Node.STYLESET) {
-        styleset(leaf, res, option);
+        styleset(leaf, res);
       }
     });
     return res;
   }
 
-  function styleset(node, res, option) {
+  function styleset(node, res) {
     var sels = selectors(node.first());
     var styles = block(node.last());
     var i = idx++;
     sels.forEach(function (sel) {
-      record(sel, i, styles, res, option);
+      record(sel, i, styles, res);
     });
   }
 
@@ -179,7 +179,7 @@
     return s;
   }
 
-  function record(sel, idx, styles, res, option) {
+  function record(sel, idx, styles, res) {
     var _p = [0, 0, 0];
 
     for (var i = sel.length - 1; i >= 0; i--) {
@@ -366,15 +366,10 @@
       res = save(temp, res);
     }
 
-    if (option.noValue) {
-      res._v = true;
-    } else {
-      res._v = res._v || [];
-      styles.forEach(function (style) {
-        res._v.push([idx, style]);
-      });
-    }
-
+    res._v = res._v || [];
+    styles.forEach(function (style) {
+      res._v.push([idx, style.split(':')]);
+    });
     res._p = _p;
   }
 
@@ -549,10 +544,9 @@
     _createClass(Selenite, [{
       key: "parse",
       value: function parse$1(code) {
-        var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
         this.parser = homunculus.getParser('css');
         this.node = this.parser.parse(code);
-        return parse(this.node, option);
+        return parse(this.node);
       }
     }, {
       key: "tokens",
