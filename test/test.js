@@ -156,6 +156,11 @@ describe('simple', function() {
     let res = selenite.parse(s);
     expect(res).to.eql({"_*":true,"_*.#":true,"*.a#b":{"div":{"_v":[[0,["margin",0]]],"_p":[1,1,2]}}});
   });
+  it('toUpperCase', function() {
+    let s = 'div{font-size:10px}';
+    let res = selenite.parse(s);
+    expect(res).to.eql({"div":{"_v":[[0,["fontSize","10px"]]],"_p":[0,0,1]}});
+  });
 });
 
 describe(':pseudo', function() {

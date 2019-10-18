@@ -201,7 +201,11 @@ function record(sel, idx, styles, res) {
   }
   res._v = res._v || [];
   styles.forEach(function(style) {
-    res._v.push([idx, style.split(':')]);
+    let [k, v] = style.split(':');
+    k = k.replace(/-(\w)/g, function($0, $1) {
+      return $1.toUpperCase();
+    });
+    res._v.push([idx, [k, v]]);
   });
   res._p = _p;
 }
